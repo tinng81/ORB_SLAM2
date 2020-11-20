@@ -21,4 +21,4 @@ Vocabulary/ORBvoc.txt
 build/
 *~
 lib/
-
+Examples/ROS/ORB_SLAM2/Vocabulary/*.txt

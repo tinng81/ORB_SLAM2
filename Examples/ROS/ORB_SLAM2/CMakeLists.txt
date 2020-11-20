@@ -30,6 +30,8 @@ endif()
 
 LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../../../cmake_modules)
 
+add_definitions(-DSTREAM_COMPRESSED)
+
 find_package(OpenCV 3.0 QUIET)
 if(NOT OpenCV_FOUND)
    find_package(OpenCV 2.4.3 QUIET)
@@ -40,12 +42,16 @@ endif()
 
 find_package(Eigen3 3.1.0 REQUIRED)
 find_package(Pangolin REQUIRED)
+find_package(PCL 1.8 REQUIRED)
+
 
 include_directories(
 ${PROJECT_SOURCE_DIR}
 ${PROJECT_SOURCE_DIR}/../../../
 ${PROJECT_SOURCE_DIR}/../../../include
 ${Pangolin_INCLUDE_DIRS}
+${PCL_INCLUDE_DIRS}
+/usr/local/include
 )
 
 set(LIBS 
@@ -55,43 +61,60 @@ ${Pangolin_LIBRARIES}
 ${PROJECT_SOURCE_DIR}/../../../Thirdparty/DBoW2/lib/libDBoW2.so
 ${PROJECT_SOURCE_DIR}/../../../Thirdparty/g2o/lib/libg2o.so
 ${PROJECT_SOURCE_DIR}/../../../lib/libORB_SLAM2.so
+/usr/lib/x86_64-linux-gnu/libboost_system.so
+/usr/lib/x86_64-linux-gnu/libboost_filesystem.so
+${PCL_LIBRARIES}
+${PROJECT_SOURCE_DIR}/../../../../Zdepth/build/libzdepth.a
+${PROJECT_SOURCE_DIR}/../../../../Zdepth/build/zstd/libzstd.a
 )
 
-# Node for monocular camera
-rosbuild_add_executable(Mono
-src/ros_mono.cc
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_DEFINITIONS})
+
+# Node with publisher
+rosbuild_add_executable(RGBD_rs2
+src/ros_rgbd_rs2.cc
 )
 
-target_link_libraries(Mono
+target_link_libraries(RGBD_rs2
 ${LIBS}
 )
 
-# Node for monocular camera (Augmented Reality Demo)
-rosbuild_add_executable(MonoAR
-src/AR/ros_mono_ar.cc
-src/AR/ViewerAR.h
-src/AR/ViewerAR.cc
-)
+# # Node for monocular camera
+# rosbuild_add_executable(Mono
+# src/ros_mono.cc
+# )
 
-target_link_libraries(MonoAR
-${LIBS}
-)
+# target_link_libraries(Mono
+# ${LIBS}
+# )
 
-# Node for stereo camera
-rosbuild_add_executable(Stereo
-src/ros_stereo.cc
-)
+# # Node for monocular camera (Augmented Reality Demo)
+# rosbuild_add_executable(MonoAR
+# src/AR/ros_mono_ar.cc
+# src/AR/ViewerAR.h
+# src/AR/ViewerAR.cc
+# )
 
-target_link_libraries(Stereo
-${LIBS}
-)
+# target_link_libraries(MonoAR
+# ${LIBS}
+# )
+
+# # Node for stereo camera
+# rosbuild_add_executable(Stereo
+# src/ros_stereo.cc
+# )
+
+# target_link_libraries(Stereo
+# ${LIBS}
+# )
 
 # Node for RGB-D camera
-rosbuild_add_executable(RGBD
-src/ros_rgbd.cc
-)
-
-target_link_libraries(RGBD
-${LIBS}
-)
+# rosbuild_add_executable(RGBD
+# src/ros_rgbd.cc
+# )
+#
+# target_link_libraries(RGBD
+# ${LIBS}
+# )
 
