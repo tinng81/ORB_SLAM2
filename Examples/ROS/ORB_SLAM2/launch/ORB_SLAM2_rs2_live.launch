@@ -1,0 +1,27 @@
+<launch>
+	<arg
+	    name="path_to_vocabulary"
+	    default="$(find ORB_SLAM2)/Vocabulary/ORBvoc.txt"
+	/>	
+
+	<arg
+	    name="path_to_settings"
+	    default="$(find ORB_SLAM2)/param/d435i.yaml"
+	/>	
+
+    <arg
+        name="rgb_topic_name"
+        default="image_color"
+    />
+
+    <arg
+        name="depth_topic_name"
+        default="image_depth"
+    />
+
+	<node pkg="ORB_SLAM2" type="RGBD_rs2" name="RGBD" output="screen" args="$(arg path_to_vocabulary) $(arg path_to_settings)">
+	    <remap from="/camera/rgb/image_raw" to="$(arg rgb_topic_name)" />
+        <remap from="/camera/depth_registered/image_raw" to="$(arg
+depth_topic_name)" />
+	</node>
+</launch>

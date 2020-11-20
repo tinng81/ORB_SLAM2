@@ -1,0 +1,27 @@
+<launch>
+	<arg
+	    name="path_to_vocabulary"
+	    default="$(find ORB_SLAM2)/Vocabulary/ORBvoc.txt"
+	/>	
+
+	<arg
+	    name="path_to_settings"
+	    default="$(find ORB_SLAM2)/param/my_camera.yaml"
+	/>	
+
+	<!-- USB camera node with the parameters set as desired -->
+	<!-- Parameters should follow the capabilities shown in v4l2-ctl -->
+	<node name="usb_cam" pkg="usb_cam" type="usb_cam_node" >
+            <param name="video_device" value="/dev/video0" />
+            <param name="image_width" value="640" />
+            <param name="image_height" value="480" />
+            <param name="pixel_format" value="yuyv" />
+	    <param name="framerate" value="30" />
+            <param name="camera_frame_id" value="usb_cam" />
+            <param name="io_method" value="mmap" />
+        </node>
+
+	<node pkg="ORB_SLAM2" type="Mono" name="Mono" output="screen" args="$(arg path_to_vocabulary) $(arg path_to_settings)">
+	    <remap from="camera/image_raw" to="usb_cam/image_raw" />
+	</node>
+</launch>
