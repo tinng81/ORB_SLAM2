@@ -112,6 +112,7 @@ public:
 
     // True if local mapping is deactivated and we are performing only localization
     bool mbOnlyTracking;
+    bool mbFrameIsKeyframe;
 
     void Reset();
 

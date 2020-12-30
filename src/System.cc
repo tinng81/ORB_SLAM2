@@ -492,4 +492,9 @@ vector<cv::KeyPoint> System::GetTrackedKeyPointsUn()
     return mTrackedKeyPointsUn;
 }
 
+bool System::isKeyframe()
+{
+    return mpTracker->mbFrameIsKeyframe;
+}
+
 } //namespace ORB_SLAM

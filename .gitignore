@@ -21,4 +21,6 @@ Vocabulary/ORBvoc.txt
 build/
 *~
 lib/
-
+Examples/ROS/ORB_SLAM2/Vocabulary/*.txt
+.DS_Store
+._.DS_Store
